@@ -1,6 +1,8 @@
 import GUI from "lil-gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 
 /**
  * Base
@@ -20,14 +22,27 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 
 /**
- * Object
+ * Fonts
  */
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshBasicMaterial()
-);
-
-scene.add(cube);
+const fontLoader = new FontLoader();
+fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
+  const textGeometry = new TextGeometry("Turn up", {
+    font: font,
+    size: 0.5,
+    depth: 0.2,
+    curveSegments: 5,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelOffset: 0,
+    bevelSegments: 4,
+  });
+  const textMaterial = new THREE.MeshBasicMaterial({
+    wireframe: true,
+  });
+  const text = new THREE.Mesh(textGeometry, textMaterial);
+  scene.add(text);
+});
 
 /**
  * Sizes
