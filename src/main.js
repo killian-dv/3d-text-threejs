@@ -20,6 +20,8 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const matcapTexture = textureLoader.load("/textures/matcaps/rainbow.png");
+matcapTexture.colorSpace = THREE.SRGBColorSpace;
 
 /**
  * Fonts
@@ -45,11 +47,31 @@ fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
   //   -(textGeometry.boundingBox.max.z - 0.03) * 0.5
   // );
   textGeometry.center();
-  const textMaterial = new THREE.MeshBasicMaterial({
-    wireframe: true,
+  const rainbowMaterial = new THREE.MeshMatcapMaterial({
+    matcap: matcapTexture,
   });
-  const text = new THREE.Mesh(textGeometry, textMaterial);
+  const text = new THREE.Mesh(textGeometry, rainbowMaterial);
   scene.add(text);
+
+  const torusGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
+  for (let i = 0; i < 100; i++) {
+    const torus = new THREE.Mesh(torusGeometry, rainbowMaterial);
+
+    // random position
+    torus.position.x = (Math.random() - 0.5) * 10;
+    torus.position.y = (Math.random() - 0.5) * 10;
+    torus.position.z = (Math.random() - 0.5) * 10;
+
+    // random rotation
+    torus.rotation.x = Math.random() * Math.PI;
+    torus.rotation.y = Math.random() * Math.PI;
+
+    // random scale
+    const torusScale = Math.random() * 0.8 + 0.2; // 0.2 to 1
+    torus.scale.set(torusScale, torusScale, torusScale);
+
+    scene.add(torus);
+  }
 });
 
 /**
