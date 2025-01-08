@@ -1,3 +1,4 @@
+import { gsap } from "gsap";
 import GUI from "lil-gui";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -53,6 +54,15 @@ fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
   const text = new THREE.Mesh(textGeometry, rainbowMaterial);
   scene.add(text);
 
+  // Animation of text
+  gsap.to(text.position, {
+    y: 0.3,
+    duration: 0.4,
+    yoyo: true,
+    repeat: -1,
+    ease: "circ.out",
+  });
+
   const torusGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
   for (let i = 0; i < 100; i++) {
     const torus = new THREE.Mesh(torusGeometry, rainbowMaterial);
@@ -69,6 +79,16 @@ fontLoader.load("/fonts/helvetiker_regular.typeface.json", (font) => {
     // random scale
     const torusScale = Math.random() * 0.8 + 0.2; // 0.2 to 1
     torus.scale.set(torusScale, torusScale, torusScale);
+
+    // animation of torus
+    gsap.to(torus.position, {
+      y: torus.position.y + Math.random(),
+      delay: Math.random() * 0.5,
+      duration: 0.4,
+      yoyo: true,
+      repeat: -1,
+      ease: "circ.out",
+    });
 
     scene.add(torus);
   }
